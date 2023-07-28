@@ -1,0 +1,12 @@
+node_modules/
+# Test
+coverage/
+# IDE's
+.idea/
+.vscode/
+.DS_Store
+# Build's
+dist/
+build/
+# Environment's
+.env

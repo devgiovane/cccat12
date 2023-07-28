@@ -1,0 +1,28 @@
+import Ride from "../../domain/Ride";
+
+type Input = {
+	segments: Array<{
+		distance: number,
+		date: Date
+	}>
+}
+
+type Output = {
+	price: number
+}
+
+export default class CalculateRide {
+
+	constructor() {
+	}
+
+	public async execute(input: Input): Promise<Output>  {
+		const ride = new Ride();
+		for (const segment of input.segments) {
+			ride.addSegment(segment.distance, new Date(segment.date));
+		}
+		const price = ride.calculate();
+		return { price };
+	}
+
+}
