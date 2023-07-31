@@ -1,14 +1,22 @@
+import DatabaseConnection from "../../src/infra/database/DatabaseConnection";
+import PgPromiseConnection from "../../src/infra/database/PgPromiseConnection";
 import GetDriver from "../../src/application/usecase/GetDriver";
 import CreateDriver from "../../src/application/usecase/CreateDriver";
 import DriverRepository from "../../src/application/repository/DriverRepository";
 import DriverRepositoryDatabase from "../../src/infra/repository/DriverRepositoryDatabase";
 
+let connection: DatabaseConnection;
 let driverRepository: DriverRepository;
 
 describe('Create Driver Integration Test', function () {
 
 	beforeAll(function () {
-		driverRepository = new DriverRepositoryDatabase();
+		connection = new PgPromiseConnection();
+		driverRepository = new DriverRepositoryDatabase(connection);
+	});
+
+	afterAll(async function () {
+		await connection.close();
 	});
 
 	it('should be able create driver', async function () {

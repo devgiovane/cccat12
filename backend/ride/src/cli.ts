@@ -1,17 +1,13 @@
+import PgPromiseConnection from "./infra/database/PgPromiseConnection";
 import CreatePassenger from "./application/usecase/CreatePassenger";
 import PassengerRepositoryDatabase from "./infra/repository/PassengerRepositoryDatabase";
+import CLIController from "./infra/cli/CLIController";
+import NodeInputOutput from "./infra/cli/NodeInputOutput";
 
-process.stdin.on("data", async function (chunk) {
-	const command = chunk.toString().replace(/\n/g, "");
-	if (command.startsWith('create-passenger')) {
-		const [ name, email, document ] = command.replace("create-passenger ", "").split(" ");
-		try {
-			const passengerRepository = new PassengerRepositoryDatabase();
-			const useCase = new CreatePassenger(passengerRepository);
-			const output = await useCase.execute({ name, email, document });
-			console.log(output);
-		} catch (error) {
-			console.error(error);
-		}
-	}
-});
+const connection = new PgPromiseConnection();
+const passengerRepository = new PassengerRepositoryDatabase(connection);
+const createPassenger = new CreatePassenger(passengerRepository);
+
+const inputOutput = new NodeInputOutput();
+new CLIController(inputOutput, createPassenger);
+

@@ -1,14 +1,22 @@
+import DatabaseConnection from "../../src/infra/database/DatabaseConnection";
+import PgPromiseConnection from "../../src/infra/database/PgPromiseConnection";
 import GetPassenger from "../../src/application/usecase/GetPassenger";
 import CreatePassenger from "../../src/application/usecase/CreatePassenger";
 import PassengerRepository from "../../src/application/repository/PassengerRepository";
 import PassengerRepositoryDatabase from "../../src/infra/repository/PassengerRepositoryDatabase";
 
+let connection: DatabaseConnection;
 let passengerRepository: PassengerRepository;
 
 describe('Create Passenger Integration Test', function () {
 
 	beforeAll(function () {
-		passengerRepository = new PassengerRepositoryDatabase();
+		connection = new PgPromiseConnection();
+		passengerRepository = new PassengerRepositoryDatabase(connection);
+	});
+
+	afterAll(async function () {
+		await connection.close();
 	});
 
 	it('should be able create passenger', async function () {

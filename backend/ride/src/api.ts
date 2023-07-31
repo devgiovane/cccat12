@@ -1,69 +1,26 @@
-import morgan from "morgan";
-import express, { Request, Response } from "express";
-
-import CreateDriver from "./application/usecase/CreateDriver";
-import GetDriver from "./application/usecase/GetDriver";
 import CalculateRide from "./application/usecase/CalculateRide";
+import GetDriver from "./application/usecase/GetDriver";
+import CreateDriver from "./application/usecase/CreateDriver";
 import GetPassenger from "./application/usecase/GetPassenger";
 import CreatePassenger from "./application/usecase/CreatePassenger";
+import ExpressAdapter from "./infra/http/ExpressAdapter";
+import MainController from "./infra/http/MainController";
+import PgPromiseConnection from "./infra/database/PgPromiseConnection";
 import DriverRepositoryDatabase from "./infra/repository/DriverRepositoryDatabase";
 import PassengerRepositoryDatabase from "./infra/repository/PassengerRepositoryDatabase";
 
-const app = express();
-app.use(morgan('⚡️[~:method] :url HTTP/:http-version :status :response-time ms'));
-app.use(express.json());
+const httpServer = new ExpressAdapter();
+const connection = new PgPromiseConnection();
 
-app.get("/health", function (_: Request, res: Response) {
-	return res.json({ status: 'ok' });
-});
+const calculateRide = new CalculateRide();
+const passengerRepository = new PassengerRepositoryDatabase(connection)
+const getPassenger = new GetPassenger(passengerRepository);
+const createPassenger = new CreatePassenger(passengerRepository);
+const driverRepository = new DriverRepositoryDatabase(connection);
+const getDriver = new GetDriver(driverRepository);
+const createDriver = new CreateDriver(driverRepository);
 
-app.post("/ride/calculate", async function (req: Request, res: Response) {
-	try {
-		const useCase = new CalculateRide();
-		const output = await useCase.execute(req.body);
-		return res.json(output);
-	} catch (error: any) {
-		return res.status(422).send(error.message);
-	}
-});
+new MainController(httpServer, calculateRide, createDriver, getDriver, createPassenger, getPassenger);
 
-app.post("/passenger", async function (req: Request, res: Response) {
-	try {
-		const passengerRepository = new PassengerRepositoryDatabase();
-		const useCase = new CreatePassenger(passengerRepository);
-		const output = await useCase.execute(req.body);
-		return res.json(output);
-	} catch (error: any) {
-		return res.status(422).send(error.message);
-	}
-});
+httpServer.listen(3000);
 
-app.get("/passenger/:passengerId", async function (req: Request, res: Response) {
-	const passengerRepository = new PassengerRepositoryDatabase();
-	const useCase = new GetPassenger(passengerRepository);
-	const output = await useCase.execute({ passengerId: req.params.passengerId });
-	return res.json(output);
-});
-
-app.post("/driver", async function (req: Request, res: Response) {
-	try {
-		const driverRepository = new DriverRepositoryDatabase();
-		const useCase = new CreateDriver(driverRepository);
-		const output = await useCase.execute(req.body);
-		return res.json(output);
-	} catch (error: any) {
-		return res.status(422).send(error.message);
-	}
-});
-
-app.get("/driver/:driverId", async function (req: Request, res: Response) {
-	const driverRepository = new DriverRepositoryDatabase();
-	const useCase = new GetDriver(driverRepository);
-	const output = await useCase.execute({ driverId: req.params.driverId });
-	console.log(output)
-	return res.json(output);
-});
-
-app.listen(3000, function () {
-	console.log("⚡️[~server] is running in http://localhost:3000")
-});
