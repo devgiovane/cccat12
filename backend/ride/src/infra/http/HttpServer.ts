@@ -4,6 +4,6 @@ type Payload = {
 }
 
 export default interface HttpServer {
-	on(method: string, url: string, callback: (payload: Payload) => {}): void;
+	on(method: string, url: string, callback: (payload: Payload) => any): void;
 	listen(port: number): void;
 }

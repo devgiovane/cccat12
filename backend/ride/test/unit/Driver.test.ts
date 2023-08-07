@@ -1,4 +1,4 @@
-import Driver from "../../src/domain/Driver";
+import Driver from "../../src/domain/entity/Driver";
 
 describe('Driver Unit Test', function () {
 
@@ -6,9 +6,9 @@ describe('Driver Unit Test', function () {
 		const driver = Driver.create("John Doe", "john.doe@gmail.com", "74587887803", "AAA9999");
 		expect(driver.driverId).toBeDefined();
 		expect(driver.name).toBe("John Doe");
-		expect(driver.email.value).toBe("john.doe@gmail.com");
-		expect(driver.document.value).toBe("74587887803");
-		expect(driver.plate.value).toBe("AAA9999");
+		expect(driver.email.getValue()).toBe("john.doe@gmail.com");
+		expect(driver.document.getValue()).toBe("74587887803");
+		expect(driver.plate.getValue()).toBe("AAA9999");
 	});
 
 	it('should not be able create a driver with invalid document', function () {

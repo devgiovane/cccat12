@@ -1,12 +1,14 @@
-import UUID from "./UUID";
-import Cpf from "./Cpf";
-import Email from "./Email";
-import Plate from "./Plate";
+import UUID from "../valueObjects/UUID";
+import Cpf from "../valueObjects/Cpf";
+import Email from "../valueObjects/Email";
+import Plate from "../valueObjects/Plate";
 
 export default class Driver {
+
 	public email: Email;
 	public document: Cpf;
 	public plate: Plate;
+
 	constructor(
 		readonly driverId: string,
 		readonly name: string,
@@ -23,4 +25,5 @@ export default class Driver {
 		const uuid = UUID.create();
 		return new Driver(uuid.value, name, email, document, plate);
 	}
+
 }

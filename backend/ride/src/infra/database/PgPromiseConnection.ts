@@ -10,7 +10,7 @@ export default class PgPromiseConnection implements DatabaseConnection {
 		this.connection =  pgp()("postgres://admin:admin@localhost:5432/app");
 	}
 
-	public async query(statement: string, params: Array<any>): Promise<any> {
+	public async query(statement: string, params: any): Promise<any> {
 		return await this.connection.query(statement, params);
 	}
 

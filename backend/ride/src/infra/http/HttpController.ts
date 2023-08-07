@@ -5,7 +5,7 @@ import GetDriver from "../../application/usecase/GetDriver";
 import CreatePassenger from "../../application/usecase/CreatePassenger";
 import GetPassenger from "../../application/usecase/GetPassenger";
 
-export default class MainController {
+export default class HttpController {
 
 	constructor(
 		httpServer: HttpServer,

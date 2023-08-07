@@ -1,4 +1,4 @@
-import Driver from "../../domain/Driver";
+import Driver from "../../domain/entity/Driver";
 import DriverRepository from "../repository/DriverRepository";
 
 type Input = {

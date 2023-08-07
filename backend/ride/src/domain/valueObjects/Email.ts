@@ -1,8 +1,10 @@
 export default class Email {
+
 	constructor(
-		public readonly value: string
+		private readonly value: string
 	) {
-		if (!this.validate(value)) throw new Error("Invalid email");
+		if (!this.validate(value))
+			throw new Error("Invalid email");
 	}
 
 	private validate(email: string) {
@@ -11,6 +13,10 @@ export default class Email {
 			.match(
 				/^[^\s@]+@[^\s@]+\.[^\s@]+$/
 			);
+	}
+
+	public getValue() {
+		return this.value;
 	}
 
 }

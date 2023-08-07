@@ -1,6 +1,6 @@
-import InputOutput from "./InputOutput";
+import CliHandler from "./CliHandler";
 
-export default class NodeInputOutput extends InputOutput {
+export default class NodeCliHandler extends CliHandler {
 
 	constructor() {
 		super();

@@ -2,7 +2,7 @@ type Commands = {
 	[key: string]: Function
 }
 
-export default abstract class InputOutput {
+export default abstract class CliHandler {
 	private commands: Commands = {};
 
 	public on(command: string, callback: Function) {

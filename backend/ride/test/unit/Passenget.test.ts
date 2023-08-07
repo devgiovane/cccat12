@@ -1,4 +1,4 @@
-import Passenger from "../../src/domain/Passenger";
+import Passenger from "../../src/domain/entity/Passenger";
 
 describe('Passenger Unit Test', function () {
 
@@ -6,8 +6,8 @@ describe('Passenger Unit Test', function () {
 		const passenger = Passenger.create("John Doe", "john.doe@gmail.com", "74587887803");
 		expect(passenger.passengerId).toBeDefined();
 		expect(passenger.name).toBe("John Doe");
-		expect(passenger.email.value).toBe("john.doe@gmail.com");
-		expect(passenger.document.value).toBe("74587887803");
+		expect(passenger.email.getValue()).toBe("john.doe@gmail.com");
+		expect(passenger.document.getValue()).toBe("74587887803");
 	});
 
 	it('should not be able create a passenger with invalid document', function () {

@@ -1,10 +1,10 @@
-import Email from "../../src/domain/Email";
+import Email from "../../src/domain/valueObjects/Email";
 
 describe('Email Unit Test', function () {
 
 	it('should be able create valid email', function () {
 		const email = new Email("john.doe@gmail.com");
-		expect(email.value).toBe("john.doe@gmail.com");
+		expect(email.getValue()).toBe("john.doe@gmail.com");
 	});
 
 	it.each([

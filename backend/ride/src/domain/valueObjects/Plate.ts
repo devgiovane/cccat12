@@ -1,9 +1,10 @@
 export default class Plate {
 
 	constructor(
-		public readonly value: string
+		private readonly value: string
 	) {
-		if (!this.validate(value)) throw new Error("Invalid plate");
+		if (!this.validate(value))
+			throw new Error("Invalid plate");
 	}
 
 	private validate(plate: string) {
@@ -12,6 +13,10 @@ export default class Plate {
 			.match(
 				/^[A-Z]{3}[0-9]{4}$/
 			);
+	}
+
+	public getValue() {
+		return this.value;
 	}
 
 }

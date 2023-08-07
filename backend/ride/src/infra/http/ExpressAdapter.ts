@@ -1,10 +1,10 @@
 import morgan from "morgan";
-import express, { Express, Request, Response } from "express";
+import express, { Request, Response } from "express";
 
 import HttpServer from "./HttpServer";
 
 export default class ExpressAdapter implements HttpServer {
-	private readonly server: Express;
+	private readonly server: any;
 
 	constructor() {
 		this.server = express();
@@ -13,7 +13,6 @@ export default class ExpressAdapter implements HttpServer {
 	}
 
 	public on(method: string, url: string, callback: Function): void {
-		// @ts-ignore
 		this.server[method.toLowerCase()](url, async function (req: Request, res: Response) {
 			try {
 				const output = await callback({ body: req.body, params: req.params });

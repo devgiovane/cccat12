@@ -1,10 +1,12 @@
-import Cpf from "./Cpf";
-import Email from "./Email";
-import UUID from "./UUID";
+import Cpf from "../valueObjects/Cpf";
+import Email from "../valueObjects/Email";
+import UUID from "../valueObjects/UUID";
 
 export default class Passenger {
+
 	public email: Email;
 	public document: Cpf;
+
 	constructor(
 		readonly passengerId: string,
 		readonly name: string,
@@ -19,4 +21,5 @@ export default class Passenger {
 		const uuid = UUID.create();
 		return new Passenger(uuid.value, name, email, document);
 	}
+
 }

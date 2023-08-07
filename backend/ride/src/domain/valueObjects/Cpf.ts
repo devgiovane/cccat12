@@ -1,8 +1,10 @@
 export default class Cpf {
+
 	constructor(
-		public readonly value: string
+		private readonly value: string
 	) {
-		if (!this.validate()) throw new Error("Invalid cpf");
+		if (!this.validate())
+			throw new Error("Invalid cpf");
 	}
 
 	private validate() {
@@ -39,6 +41,10 @@ export default class Cpf {
 
 	private extractCheckDigits(cpf: string) {
 		return cpf.slice(9);
+	}
+
+	public getValue() {
+		return this.value;
 	}
 
 }

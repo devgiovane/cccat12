@@ -6,11 +6,18 @@
 
 ### Concepts
 
+- SOLID
 - Clean Code
 - Code smells and Refactoring
 - Test-Driven Development (TDD)
 - Ports and Adapters (Hexagonal)
-- Transaction Script and Domain Modal
+- Patterns Transaction Script
+- Patterns Domain Model
+- Patterns Strategy
+- Clean Architecture
+- Patterns Chain of Responsibility
+- Patterns Template Method
+- Patterns State
 
 ### Create by
 © [Giovane Santos](https://giovanesantossilva.github.io/)

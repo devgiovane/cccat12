@@ -1,7 +1,5 @@
-import crypto from "crypto";
-
+import Passenger from "../../domain/entity/Passenger";
 import PassengerRepository from "../repository/PassengerRepository";
-import Passenger from "../../domain/Passenger";
 
 type Input = {
 	name: string,

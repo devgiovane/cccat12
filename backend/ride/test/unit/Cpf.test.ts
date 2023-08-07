@@ -1,4 +1,4 @@
-import Cpf from '../../src/domain/Cpf';
+import Cpf from '../../src/domain/valueObjects/Cpf';
 
 describe('Cpf Unit Test', function () {
 
@@ -8,7 +8,7 @@ describe('Cpf Unit Test', function () {
 		"87175659520"
 	])('should be able contain cpf valid', function (value: string) {
 		const cpf = new Cpf(value);
-		expect(cpf.value).toBe(value);
+		expect(cpf.getValue()).toBe(value);
 	});
 
 	it.each([

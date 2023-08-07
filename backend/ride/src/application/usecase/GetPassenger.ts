@@ -1,4 +1,3 @@
-import pgp from "pg-promise";
 import PassengerRepository from "../repository/PassengerRepository";
 
 type Input = {
@@ -24,8 +23,8 @@ export default class GetPassenger {
 		return {
 			passengerId: passenger.passengerId,
 			name: passenger.name,
-			email: passenger.email.value,
-			document: passenger.document.value
+			email: passenger.email.getValue(),
+			document: passenger.document.getValue()
 		};
 	}
 
