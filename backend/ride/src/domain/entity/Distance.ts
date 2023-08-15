@@ -6,7 +6,7 @@ export default class Distance {
 		const earthRadius = 6371;
 		const degreesToRadius = Math.PI / 180;
 		const deltaLat = (to.getLat() - from.getLat()) * degreesToRadius;
-		const deltaLong = (to.getLong() - to.getLong()) * degreesToRadius;
+		const deltaLong = (to.getLong() - from.getLong()) * degreesToRadius;
 		const a =
 			Math.sin(deltaLat / 2) * Math.sin(deltaLat / 2) +
 			Math.cos(from.getLat() * degreesToRadius) *

@@ -1,4 +1,5 @@
 import Ride from "../../domain/entity/Ride";
+import Coord from "../../domain/entity/Coord";
 
 type Input = {
 	positions: Array<{
@@ -18,7 +19,7 @@ export default class CalculateRide {
 	}
 
 	public async execute(input: Input): Promise<Output>  {
-		const ride = new Ride();
+		const ride = Ride.create("", new Coord(0,0), new Coord(0,0));
 		for (const position of input.positions) {
 			ride.addPosition(position.lat, position.long, new Date(position.date));
 		}
