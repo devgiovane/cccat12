@@ -1,7 +1,7 @@
 import Coord from "./Coord";
 
 export default class Position {
-	private coord: Coord;
+	private readonly coord: Coord;
 
 	constructor(
 		lat: number,

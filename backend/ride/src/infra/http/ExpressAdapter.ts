@@ -1,3 +1,4 @@
+import cors from "cors";
 import morgan from "morgan";
 import express, { Request, Response } from "express";
 
@@ -8,6 +9,7 @@ export default class ExpressAdapter implements HttpServer {
 
 	constructor() {
 		this.server = express();
+		this.server.use(cors());
 		this.server.use(express.json());
 		this.server.use(morgan('⚡️[~:method] :url HTTP/:http-version :status :response-time ms'));
 	}

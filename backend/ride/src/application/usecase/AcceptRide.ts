@@ -6,10 +6,6 @@ type Input = {
 	date: Date
 }
 
-// type Output = {
-// 	rideId: string
-// }
-
 export default class AcceptRide {
 
 	constructor(

@@ -18,6 +18,8 @@
 - Patterns Chain of Responsibility
 - Patterns Template Method
 - Patterns State
+- Patterns Builder
+- Patterns Static Factory Method
 
 ### Create by
 © [Giovane Santos](https://giovanesantossilva.github.io/)
