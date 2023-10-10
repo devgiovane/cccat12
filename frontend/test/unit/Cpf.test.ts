@@ -1,4 +1,3 @@
-import { expect } from "vitest";
 import Cpf from "../../src/domain/valueObject/Cpf.ts";
 
 describe('Cpf Unit Test', function () {

@@ -1,6 +1,4 @@
-import { expect } from "vitest";
 import Driver from "../../src/domain/entity/Driver.ts";
-
 
 describe('Driver Unit Test', function () {
 

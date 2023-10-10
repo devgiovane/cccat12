@@ -1,22 +1,24 @@
-import { it, describe, beforeAll } from "vitest";
 import { mount } from '@vue/test-utils';
-import CreateDriver from "../../src/view/CreateDriver.vue";
-import AxiosAdapter from "../../src/infra/http/AxiosAdapter.ts";
-import DriverGatewayHttp from "../../src/infra/gateway/DriverGatewayHttp.ts";
+import CreateDriver from '../../src/view/CreateDriver.vue';
+import AxiosAdapter from '../../src/infra/http/AxiosAdapter.ts';
+import DriverGateway from "../../src/infra/gateway/DriverGateway.ts";
+import DriverGatewayHttp from '../../src/infra/gateway/DriverGatewayHttp.ts';
 
 function sleep(time: number) {
 	return new Promise(resolve => setTimeout(resolve, time));
 }
 
+interface LocalTestContext {
+	driverGateway: DriverGateway
+}
+
 describe('Create Driver Integration Test', function () {
 
-	beforeAll(function () {
-		
+	beforeEach<LocalTestContext>(function (context) {
+		context.driverGateway = new DriverGatewayHttp(new AxiosAdapter());
 	});
 
-	it("should be able create a driver", async function () {
-		const httpClient = new AxiosAdapter();
-		const driverGateway = new DriverGatewayHttp(httpClient);
+	it<LocalTestContext>("should be able create a driver", async function ({ driverGateway }) {
 		const wrapper = mount(CreateDriver, {
 			global: {
 				provide: {
@@ -33,9 +35,7 @@ describe('Create Driver Integration Test', function () {
 		expect(wrapper.get(".driver-id").text()).toHaveLength(36);
 	});
 
-	it("should not be able create a driver with name invalid", async function () {
-		const httpClient = new AxiosAdapter();
-		const driverGateway = new DriverGatewayHttp(httpClient);
+	it<LocalTestContext>("should not be able create a driver with name invalid", async function ({ driverGateway }) {
 		const wrapper = mount(CreateDriver, {
 			global: {
 				provide: {
@@ -51,9 +51,7 @@ describe('Create Driver Integration Test', function () {
 		expect(wrapper.get(".error").text()).toBe("Invalid name");
 	});
 
-	it("should not be able create a driver with email invalid", async function () {
-		const httpClient = new AxiosAdapter();
-		const driverGateway = new DriverGatewayHttp(httpClient);
+	it<LocalTestContext>("should not be able create a driver with email invalid", async function ({ driverGateway }) {
 		const wrapper = mount(CreateDriver, {
 			global: {
 				provide: {
@@ -69,9 +67,7 @@ describe('Create Driver Integration Test', function () {
 		expect(wrapper.get(".error").text()).toBe("Invalid email");
 	});
 
-	it("should not be able create a driver with document invalid", async function () {
-		const httpClient = new AxiosAdapter();
-		const driverGateway = new DriverGatewayHttp(httpClient);
+	it<LocalTestContext>("should not be able create a driver with document invalid", async function ({ driverGateway }) {
 		const wrapper = mount(CreateDriver, {
 			global: {
 				provide: {
@@ -87,9 +83,7 @@ describe('Create Driver Integration Test', function () {
 		expect(wrapper.get(".error").text()).toBe("Invalid cpf");
 	});
 
-	it("should not be able create a driver with car plate invalid", async function () {
-		const httpClient = new AxiosAdapter();
-		const driverGateway = new DriverGatewayHttp(httpClient);
+	it<LocalTestContext>("should not be able create a driver with car plate invalid", async function ({ driverGateway }) {
 		const wrapper = mount(CreateDriver, {
 			global: {
 				provide: {

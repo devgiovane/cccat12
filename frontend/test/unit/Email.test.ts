@@ -1,4 +1,3 @@
-import { expect } from "vitest";
 import Email from "../../src/domain/valueObject/Email.ts";
 
 describe('Email Unit Test', function () {

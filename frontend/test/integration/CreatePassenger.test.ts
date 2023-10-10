@@ -1,18 +1,24 @@
 import { mount } from '@vue/test-utils';
 import CreatePassenger from "../../src/view/CreatePassenger.vue";
 import AxiosAdapter from "../../src/infra/http/AxiosAdapter.ts";
+import PassengerGateway from "../../src/infra/gateway/PassengerGateway.ts";
 import PassengerGatewayHttp from "../../src/infra/gateway/PassengerGatewayHttp.ts";
 
 function sleep(time: number) {
 	return new Promise(resolve => setTimeout(resolve, time));
 }
 
+interface LocalTestContext {
+	passengerGateway: PassengerGateway
+}
+
 describe('Create Passenger Integration Test', function () {
 
+	beforeEach<LocalTestContext>(function (context) {
+		context.passengerGateway = new PassengerGatewayHttp(new AxiosAdapter());
+	});
 
-	it("should be able create a passenger", async function () {
-		const httpClient = new AxiosAdapter();
-		const passengerGateway = new PassengerGatewayHttp(httpClient);
+	it<LocalTestContext>("should be able create a passenger", async function ({ passengerGateway }) {
 		const wrapper = mount(CreatePassenger, {
 			global: {
 				provide: {
@@ -28,9 +34,7 @@ describe('Create Passenger Integration Test', function () {
 		expect(wrapper.get(".passenger-id").text()).toHaveLength(36);
 	});
 
-	it("should not be able create a passenger with invalid name", async function () {
-		const httpClient = new AxiosAdapter();
-		const passengerGateway = new PassengerGatewayHttp(httpClient);
+	it<LocalTestContext>("should not be able create a passenger with invalid name", async function ({ passengerGateway }) {
 		const wrapper = mount(CreatePassenger, {
 			global: {
 				provide: {
@@ -45,9 +49,7 @@ describe('Create Passenger Integration Test', function () {
 		expect(wrapper.get(".error").text()).toBe("Invalid name");
 	});
 
-	it("should not be able create a passenger with invalid email", async function () {
-		const httpClient = new AxiosAdapter();
-		const passengerGateway = new PassengerGatewayHttp(httpClient);
+	it<LocalTestContext>("should not be able create a passenger with invalid email", async function ({ passengerGateway }) {
 		const wrapper = mount(CreatePassenger, {
 			global: {
 				provide: {
@@ -62,9 +64,7 @@ describe('Create Passenger Integration Test', function () {
 		expect(wrapper.get(".error").text()).toBe("Invalid email");
 	});
 
-	it("should not be able create a passenger with invalid document", async function () {
-		const httpClient = new AxiosAdapter();
-		const passengerGateway = new PassengerGatewayHttp(httpClient);
+	it<LocalTestContext>("should not be able create a passenger with invalid document", async function ({ passengerGateway }) {
 		const wrapper = mount(CreatePassenger, {
 			global: {
 				provide: {

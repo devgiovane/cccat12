@@ -1,4 +1,3 @@
-import { expect } from "vitest";
 import Name from "../../src/domain/valueObject/Name.ts";
 
 describe('Name Unit Test', function () {

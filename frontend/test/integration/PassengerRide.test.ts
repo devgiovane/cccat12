@@ -1,23 +1,30 @@
-import { expect} from "vitest";
 import { mount  } from '@vue/test-utils';
 import AxiosAdapter from "../../src/infra/http/AxiosAdapter.ts";
 import PassengerRide from "../../src/view/PassengerRide.vue";
 import CreatePassenger from "../../src/view/CreatePassenger.vue";
+import RideGateway from "../../src/infra/gateway/RideGateway.ts";
 import RideGatewayHttp from "../../src/infra/gateway/RideGatewayHttp.ts";
 import PassengerGatewayHttp from "../../src/infra/gateway/PassengerGatewayHttp.ts";
+import GeoLocation from "../../src/infra/geolocation/GeoLocation.ts";
 import GeoLocationMemoryAdapter from "../../src/infra/geolocation/GeoLocationMemoryAdapter.ts";
 
 function sleep(time: number) {
 	return new Promise(resolve => setTimeout(resolve, time));
 }
 
+interface LocalTestContext {
+	geoLocation: GeoLocation
+	rideGateway: RideGateway,
+}
+
 describe('Passenger Ride Integration Test', function () {
 
+	beforeEach<LocalTestContext>(function (context) {
+		context.geoLocation = new GeoLocationMemoryAdapter();
+		context.rideGateway = new RideGatewayHttp(new AxiosAdapter());
+	});
 
-	it('should be able a calculate price of ride', async function ()  {
-		const httpClient = new AxiosAdapter();
-		const rideGateway = new RideGatewayHttp(httpClient);
-		const geoLocation = new GeoLocationMemoryAdapter();
+	it<LocalTestContext>('should be able a calculate price of ride', async function ({ rideGateway, geoLocation })  {
 		const wrapper = mount(PassengerRide, {
 			global: {
 				provide: {
@@ -34,7 +41,7 @@ describe('Passenger Ride Integration Test', function () {
 		expect(wrapper.get(".ride-price").text()).toBe("21");
 	});
 
-	it('should be able a request ride', async function () {
+	it<LocalTestContext>('should be able a request ride', async function ({ rideGateway, geoLocation }) {
 		const httpClient = new AxiosAdapter();
 		const passengerGateway = new PassengerGatewayHttp(httpClient);
 		const wrapperCreatePassenger = mount(CreatePassenger, {
@@ -50,8 +57,6 @@ describe('Passenger Ride Integration Test', function () {
 		await wrapperCreatePassenger.get(".create-passenger").trigger("click");
 		await sleep(200);
 		const passengerId = wrapperCreatePassenger.get(".passenger-id").text();
-		const rideGateway = new RideGatewayHttp(httpClient);
-		const geoLocation = new GeoLocationMemoryAdapter();
 		const wrapperPassengerRide = mount(PassengerRide, {
 			global: {
 				provide: {
