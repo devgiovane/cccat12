@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import {inject, ref} from "vue";
-import DriverGateway from "../infra/gateway/DriverGateway.ts";
-import Driver, {DriverBuilder} from "../domain/entity/Driver.ts";
+import { inject, ref } from "vue";
+import DriverGateway from "~@/infra/gateway/DriverGateway.ts";
+import Driver, { DriverBuilder } from "~@/domain/entity/Driver.ts";
 
 const error = ref("");
 const driver = ref<Driver>();

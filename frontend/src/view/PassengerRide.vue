@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { inject, onMounted, ref } from "vue";
-import RideGateway from "../infra/gateway/RideGateway.ts";
-import GeoLocation from "../infra/geolocation/GeoLocation.ts";
-import Ride, { RideBuilder } from "../domain/entity/Ride.ts";
+import RideGateway from "~@/infra/gateway/RideGateway.ts";
+import GeoLocation from "~@/infra/geolocation/GeoLocation.ts";
+import Ride, { RideBuilder } from "~@/domain/entity/Ride.ts";
 
 const ride = ref<Ride>();
 const rideBuilder = ref(new RideBuilder());
