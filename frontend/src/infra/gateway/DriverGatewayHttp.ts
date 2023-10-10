@@ -1,5 +1,6 @@
-import DriverGateway from "./DriverGateway.ts";
 import HttpClient from "../http/HttpClient.ts";
+import Driver from "../../domain/entity/Driver.ts";
+import DriverGateway, {CreateDriverInput} from "./DriverGateway.ts";
 
 export default class DriverGatewayHttp implements DriverGateway {
 
@@ -7,7 +8,15 @@ export default class DriverGatewayHttp implements DriverGateway {
 		private readonly httpClient: HttpClient
 	) {
 	}
-	public async save(driver: any) {
-		return await this.httpClient.post('http://localhost:3000/driver', driver);
+
+	public async create(driver: Driver) {
+		const input: CreateDriverInput = {
+			name: driver.getName().getValue(),
+			email: driver.getEmail().getValue(),
+			document: driver.getDocument().getValue(),
+			carPlate: driver.getCarPlate().getValue()
+		}
+		const driverData = await this.httpClient.post('http://localhost:3000/driver', input);
+		return driverData.driverId;
 	}
 }

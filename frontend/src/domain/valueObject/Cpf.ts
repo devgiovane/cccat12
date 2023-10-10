@@ -25,7 +25,7 @@ export default class Cpf {
 	}
 
 	private hasAllDigitsEqual(cpf: string) {
-		const [ firstDigit ] = cpf;
+		const [firstDigit] = cpf;
 		return [...cpf].every(digit => digit === firstDigit);
 	}
 
@@ -35,7 +35,7 @@ export default class Cpf {
 			if (factor > 1)
 				total += Number(digit) * factor--;
 		}
-		const rest = total%11;
+		const rest = total % 11;
 		return rest < 2 ? 0 : 11 - rest;
 	}
 

@@ -6,20 +6,36 @@
 
 ### Concepts
 
-- SOLID
+#### Class #01
+
 - Clean Code
-- Code smells and Refactoring
+- Refactoring and code smells
+
+#### Class #02
+
 - Test-Driven Development (TDD)
+
+#### Class #03
+
 - Ports and Adapters (Hexagonal)
-- Patterns Transaction Script
-- Patterns Domain Model
-- Patterns Strategy
+- Designer Patterns 
+  - Transaction Script
+  - Domain model
+
+#### Class #04
+
 - Clean Architecture
-- Patterns Chain of Responsibility
-- Patterns Template Method
-- Patterns State
-- Patterns Builder
-- Patterns Static Factory Method
+  - Interface Adapters
+  - Frameworks and Drivers
+  - Use cases and entities
+
+#### Class #05
+
+- Designer Patterns
+  - Chain of responsibility
+  - Template Method
+  - State
+  - Strategy
 
 ### Create by
 © [Giovane Santos](https://giovanesantossilva.github.io/)

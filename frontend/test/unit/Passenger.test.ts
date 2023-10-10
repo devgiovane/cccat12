@@ -1,6 +1,5 @@
-import {expect} from "vitest";
+import { expect } from "vitest";
 import Passenger from "../../src/domain/entity/Passenger.ts";
-
 
 describe('Passenger Unit Test', function () {
 
