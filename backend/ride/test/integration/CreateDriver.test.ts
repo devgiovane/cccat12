@@ -2,17 +2,17 @@ import DatabaseConnection from "../../src/infra/database/DatabaseConnection";
 import PgPromiseConnection from "../../src/infra/database/PgPromiseConnection";
 import GetDriver from "../../src/application/usecase/GetDriver";
 import CreateDriver from "../../src/application/usecase/CreateDriver";
-import DriverRepository from "../../src/application/repository/DriverRepository";
-import DriverRepositoryDatabase from "../../src/infra/repository/DriverRepositoryDatabase";
+import RepositoryFactory from "../../src/application/factory/RepositoryFactory";
+import RepositoryFactoryDatabase from "../../src/infra/repository/RepositoryFactoryDatabase";
 
 let connection: DatabaseConnection;
-let driverRepository: DriverRepository;
+let repositoryFactory: RepositoryFactory;
 
 describe('Create Driver Integration Test', function () {
 
 	beforeAll(function () {
 		connection = new PgPromiseConnection();
-		driverRepository = new DriverRepositoryDatabase(connection);
+		repositoryFactory = new RepositoryFactoryDatabase(connection);
 	});
 
 	afterAll(async function () {
@@ -26,7 +26,7 @@ describe('Create Driver Integration Test', function () {
 			document: "83432616074",
 			carPlate: "AAA9999"
 		};
-		const useCase = new CreateDriver(driverRepository);
+		const useCase = new CreateDriver(repositoryFactory);
 		const output = await useCase.execute(input);
 		expect(output.driverId).toBeDefined();
 	});
@@ -38,9 +38,9 @@ describe('Create Driver Integration Test', function () {
 			document: "83432616074",
 			carPlate: "AAA9999"
 		};
-		const useCase1 = new CreateDriver(driverRepository);
+		const useCase1 = new CreateDriver(repositoryFactory);
 		const output1 = await useCase1.execute(input);
-		const useCase2 = new GetDriver(driverRepository);
+		const useCase2 = new GetDriver(repositoryFactory);
 		const output2 = await useCase2.execute({ driverId: output1.driverId });
 		expect(output2.name).toBe("John Doe");
 		expect(output2.email).toBe("john.doe@gmail.com");

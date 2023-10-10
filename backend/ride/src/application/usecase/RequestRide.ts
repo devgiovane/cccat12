@@ -1,6 +1,7 @@
 import Ride from "../../domain/entity/Ride";
 import Coord from "../../domain/entity/Coord";
 import RideRepository from "../repository/RideRepository";
+import RepositoryFactory from "../factory/RepositoryFactory";
 
 type Input = {
 	passengerId: string,
@@ -15,10 +16,12 @@ type Output = {
 
 
 export default class RequestRide {
+	private rideRepository: RideRepository
 
 	constructor(
-		private readonly rideRepository: RideRepository
+		readonly repositoryFactory: RepositoryFactory
 	) {
+		this.rideRepository = repositoryFactory.createRideRepository();
 	}
 
 	public async execute(input: Input): Promise<Output> {

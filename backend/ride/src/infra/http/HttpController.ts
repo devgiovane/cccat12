@@ -1,39 +1,30 @@
+import Registry from "../di/Registry";
 import HttpServer from "../http/HttpServer";
-import CalculateRide from "../../application/usecase/CalculateRide";
-import RequestRide from "../../application/usecase/RequestRide";
-import CreateDriver from "../../application/usecase/CreateDriver";
-import GetDriver from "../../application/usecase/GetDriver";
-import CreatePassenger from "../../application/usecase/CreatePassenger";
-import GetPassenger from "../../application/usecase/GetPassenger";
+import UseCaseFactory from "../../application/factory/UseCaseFactory";
 
 export default class HttpController {
 
 	constructor(
 		httpServer: HttpServer,
-		calculateRide: CalculateRide,
-		requestRide: RequestRide,
-		createDriver: CreateDriver,
-		getDriver: GetDriver,
-		createPassenger: CreatePassenger,
-		getPassenger: GetPassenger
+		useCaseFactory: UseCaseFactory,
 	) {
 		httpServer.on("POST", "/ride/calculate", async function ({ body }) {
-			return await calculateRide.execute(body);
+			return await useCaseFactory.createCalculateRide().execute(body);
 		});
 		httpServer.on("POST", "/ride/request", async function ({ body }) {
-			return await requestRide.execute(body);
+			return await useCaseFactory.createRequestRide().execute(body);
 		});
 		httpServer.on("POST", "/driver", async function ({ body }) {
-			return await createDriver.execute(body);
+			return await useCaseFactory.createCreateDriver().execute(body);
 		});
 		httpServer.on("GET", "/driver/:driverId", async function ({ params }) {
-			return await getDriver.execute({ driverId: params.driverId });
+			return await useCaseFactory.createGetDriver().execute({ driverId: params.driverId });
 		});
 		httpServer.on("POST", "/passenger", async function ({ body }) {
-			return await createPassenger.execute(body);
+			return await useCaseFactory.createCreatePassenger().execute(body);
 		});
 		httpServer.on("GET", "/passenger/:passengerId", async function ({ params }) {
-			return await getPassenger.execute({ passengerId: params.passengerId });
+			return await useCaseFactory.createGetPassenger().execute({ passengerId: params.passengerId });
 		});
 	}
 

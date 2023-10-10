@@ -27,15 +27,24 @@
 - Clean Architecture
   - Interface Adapters
   - Frameworks and Drivers
-  - Use cases and entities
+  - Use Cases and Entities
 
 #### Class #05
 
 - Designer Patterns
+  - Strategy
   - Chain of responsibility
   - Template Method
   - State
-  - Strategy
+
+#### Class #06
+
+- Designer Patterns
+  - Builder
+  - Static Factory Method
+  - Abstract Factory
+  - Dependency injection
+  - Registry and Singleton
 
 ### Create by
 © [Giovane Santos](https://giovanesantossilva.github.io/)

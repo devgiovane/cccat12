@@ -1,3 +1,4 @@
+import RepositoryFactory from "../factory/RepositoryFactory";
 import PassengerRepository from "../repository/PassengerRepository";
 
 type Input = {
@@ -12,10 +13,12 @@ type Output = {
 }
 
 export default class GetPassenger {
+	private passengerRepository: PassengerRepository
 
 	constructor(
-		private readonly passengerRepository: PassengerRepository
+		readonly repositoryFactory: RepositoryFactory
 	) {
+		this.passengerRepository = repositoryFactory.createPassengerRepository();
 	}
 
 	public async execute(input: Input): Promise<Output>  {

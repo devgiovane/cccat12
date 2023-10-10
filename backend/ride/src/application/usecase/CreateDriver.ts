@@ -1,4 +1,5 @@
 import Driver from "../../domain/entity/Driver";
+import RepositoryFactory from "../factory/RepositoryFactory";
 import DriverRepository from "../repository/DriverRepository";
 
 type Input = {
@@ -13,10 +14,12 @@ type Output = {
 }
 
 export default class CreateDriver {
+	private driverRepository: DriverRepository
 
 	constructor(
-		private readonly driverRepository: DriverRepository
+		readonly repositoryFactory: RepositoryFactory
 	) {
+		this.driverRepository = repositoryFactory.createDriverRepository();
 	}
 
 	public async execute(input: Input): Promise<Output>  {

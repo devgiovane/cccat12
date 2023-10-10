@@ -1,31 +1,22 @@
 import DatabaseConnection from "../../src/infra/database/DatabaseConnection";
 import PgPromiseConnection from "../../src/infra/database/PgPromiseConnection";
-import PassengerRepository from "../../src/application/repository/PassengerRepository";
-import PassengerRepositoryDatabase from "../../src/infra/repository/PassengerRepositoryDatabase";
-import RideRepository from "../../src/application/repository/RideRepository";
-import RideRepositoryDatabase from "../../src/infra/repository/RideRepositoryDatabase";
-import DriverRepository from "../../src/application/repository/DriverRepository";
-import DriverRepositoryDatabase from "../../src/infra/repository/DriverRepositoryDatabase";
 import CreateDriver from "../../src/application/usecase/CreateDriver";
 import CreatePassenger from "../../src/application/usecase/CreatePassenger";
 import GetRide from "../../src/application/usecase/GetRide";
 import RequestRide from "../../src/application/usecase/RequestRide";
 import AcceptRide from "../../src/application/usecase/AcceptRide";
 import StartRide from "../../src/application/usecase/StartRide";
+import RepositoryFactory from "../../src/application/factory/RepositoryFactory";
+import RepositoryFactoryDatabase from "../../src/infra/repository/RepositoryFactoryDatabase";
 
 let connection: DatabaseConnection;
-let passengerRepository: PassengerRepository;
-let driverRepository: DriverRepository;
-let rideRepository: RideRepository;
-
+let repositoryFactory: RepositoryFactory;
 
 describe('Start Ride Integration Test', function () {
 
 	beforeAll(function () {
 		connection = new PgPromiseConnection();
-		passengerRepository = new PassengerRepositoryDatabase(connection);
-		driverRepository = new DriverRepositoryDatabase(connection);
-		rideRepository = new RideRepositoryDatabase(connection);
+		repositoryFactory = new RepositoryFactoryDatabase(connection);
 	});
 
 	afterAll(async function () {
@@ -38,7 +29,7 @@ describe('Start Ride Integration Test', function () {
 			email: "john.doe@gmail.com",
 			document: "83432616074"
 		};
-		const createPassenger = new CreatePassenger(passengerRepository);
+		const createPassenger = new CreatePassenger(repositoryFactory);
 		const outputCreatePassenger = await createPassenger.execute(inputCreatePassenger);
 		const inputRequestRide = {
 			passengerId: outputCreatePassenger.passengerId,
@@ -52,7 +43,7 @@ describe('Start Ride Integration Test', function () {
 			},
 			date: new Date("2021-03-01T10:00:00")
 		};
-		const requestRide = new RequestRide(rideRepository);
+		const requestRide = new RequestRide(repositoryFactory);
 		const outputRequestRide = await requestRide.execute(inputRequestRide);
 		const inputCreateDriver = {
 			name: "John Doe",
@@ -60,22 +51,22 @@ describe('Start Ride Integration Test', function () {
 			document: "83432616074",
 			carPlate: "AAA9999"
 		};
-		const createDriver = new CreateDriver(driverRepository);
+		const createDriver = new CreateDriver(repositoryFactory);
 		const outputCreateDriver = await createDriver.execute(inputCreateDriver);
 		const inputAcceptRide = {
 			rideId: outputRequestRide.rideId,
 			driverId: outputCreateDriver.driverId,
 			date: new Date("2021-03-01T10:10:00")
 		};
-		const acceptRide = new AcceptRide(rideRepository);
+		const acceptRide = new AcceptRide(repositoryFactory);
 		await acceptRide.execute(inputAcceptRide);
 		const inputStartRide = {
 			rideId: outputRequestRide.rideId,
 			date: new Date("2021-03-01T10:15:00")
 		}
-		const startRide = new StartRide(rideRepository);
+		const startRide = new StartRide(repositoryFactory);
 		await startRide.execute(inputStartRide);
-		const getRide = new GetRide(rideRepository);
+		const getRide = new GetRide(repositoryFactory);
 		const outputGetRide = await getRide.execute({ rideId: outputRequestRide.rideId });
 		expect(outputGetRide.status).toBe("in_progress");
 		expect(outputGetRide.startDate).toEqual(new Date("2021-03-01T10:15:00"));
