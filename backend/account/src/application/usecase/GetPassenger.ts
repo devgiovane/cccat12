@@ -16,7 +16,7 @@ export default class GetPassenger {
 	private passengerRepository: PassengerRepository
 
 	constructor(
-		readonly repositoryFactory: RepositoryFactory
+		repositoryFactory: RepositoryFactory
 	) {
 		this.passengerRepository = repositoryFactory.createPassengerRepository();
 	}

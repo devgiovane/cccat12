@@ -1,6 +1,9 @@
+import AxiosAdapter from "../../src/infra/http/AxiosAdapter";
+import AccountGateway from "../../src/application/gateway/AccountGateway";
+import AccountGatewayHttp from "../../src/infra/gateway/AccountGatewayHttp";
 import DatabaseConnection from "../../src/infra/database/DatabaseConnection";
 import PgPromiseConnection from "../../src/infra/database/PgPromiseConnection";
-import CreatePassenger from "../../src/application/usecase/CreatePassenger";
+// Use Cases
 import GetRide from "../../src/application/usecase/GetRide";
 import RequestRide from "../../src/application/usecase/RequestRide";
 import RepositoryFactory from "../../src/application/factory/RepositoryFactory";
@@ -8,12 +11,14 @@ import RepositoryFactoryDatabase from "../../src/infra/repository/RepositoryFact
 
 let connection: DatabaseConnection;
 let repositoryFactory: RepositoryFactory;
+let accountGateway: AccountGateway;
 
 describe('Request Ride Integration Test', function () {
 
 	beforeAll(function () {
 		connection = new PgPromiseConnection();
 		repositoryFactory = new RepositoryFactoryDatabase(connection);
+		accountGateway = new AccountGatewayHttp(new AxiosAdapter());
 	});
 
 	afterAll(async function () {
@@ -26,8 +31,7 @@ describe('Request Ride Integration Test', function () {
 			email: "john.doe@gmail.com",
 			document: "83432616074"
 		};
-		const createPassenger = new CreatePassenger(repositoryFactory);
-		const outputCreatePassenger = await createPassenger.execute(inputCreatePassenger);
+		const outputCreatePassenger = await accountGateway.createPassenger(inputCreatePassenger);
 		const inputRequestRide = {
 			passengerId: outputCreatePassenger.passengerId,
 			from: {
@@ -51,8 +55,7 @@ describe('Request Ride Integration Test', function () {
 			email: "john.doe@gmail.com",
 			document: "83432616074"
 		};
-		const createPassenger = new CreatePassenger(repositoryFactory);
-		const outputCreatePassenger = await createPassenger.execute(inputCreatePassenger);
+		const outputCreatePassenger = await accountGateway.createPassenger(inputCreatePassenger);
 		const inputRequestRide = {
 			passengerId: outputCreatePassenger.passengerId,
 			from: {
@@ -67,7 +70,7 @@ describe('Request Ride Integration Test', function () {
 		};
 		const requestRide = new RequestRide(repositoryFactory);
 		const outputRequestRide = await requestRide.execute(inputRequestRide);
-		const getRide = new GetRide(repositoryFactory);
+		const getRide = new GetRide(repositoryFactory, accountGateway);
 		const outputGetRide = await getRide.execute({ rideId: outputRequestRide.rideId });
 		expect(outputGetRide.rideId).toBeDefined();
 		expect(outputGetRide.status).toBe("requested");

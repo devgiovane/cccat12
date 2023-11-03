@@ -1,4 +1,6 @@
 import { createRouter, createWebHistory } from 'vue-router';
+
+import Welcome from '~@/view/Welcome.vue';
 import CreateDriver from '~@/view/CreateDriver.vue';
 import CreatePassenger from '~@/view/CreatePassenger.vue';
 import PassengerRide from '~@/view/PassengerRide.vue';
@@ -6,6 +8,10 @@ import PassengerRide from '~@/view/PassengerRide.vue';
 export default createRouter({
 	history: createWebHistory(),
 	routes: [
+		{
+			path: '/',
+			component: Welcome
+		},
 		{
 			path: '/driver',
 			component: CreateDriver
@@ -15,7 +21,7 @@ export default createRouter({
 			component: CreatePassenger
 		},
 		{
-			path: '/passenger/ride',
+			path: '/ride',
 			component: PassengerRide
 		}
 	]

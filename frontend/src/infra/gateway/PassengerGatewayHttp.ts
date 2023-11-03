@@ -15,7 +15,7 @@ export default class PassengerGatewayHttp implements PassengerGateway {
 			email: passenger.getEmail().getValue(),
 			document: passenger.getDocument().getValue()
 		};
-		const passengerData = await this.httpClient.post('http://localhost:3000/passenger', input);
+		const passengerData = await this.httpClient.post(`${import.meta.env.VITE_API_URL}/passenger`, input);
 		return passengerData.passengerId;
 	}
 }

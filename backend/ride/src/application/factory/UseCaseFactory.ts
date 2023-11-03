@@ -1,33 +1,13 @@
 import RepositoryFactory from "./RepositoryFactory";
-import CreatePassenger from "../usecase/CreatePassenger";
-import CreateDriver from "../usecase/CreateDriver";
-import GetPassenger from "../usecase/GetPassenger";
-import GetDriver from "../usecase/GetDriver";
 import GetRide from "../usecase/GetRide";
 import CalculateRide from "../usecase/CalculateRide";
 import RequestRide from "../usecase/RequestRide";
+import AccountGatewayHttp from "../../infra/gateway/AccountGatewayHttp";
+import AxiosAdapter from "../../infra/http/AxiosAdapter";
 
 export default class UseCaseFactory {
 
-	constructor(
-		private readonly repositoryFactory: RepositoryFactory
-	) {
-	}
-
-	public createCreatePassenger() {
-		return new CreatePassenger(this.repositoryFactory);
-	}
-
-	public createCreateDriver() {
-		return new CreateDriver(this.repositoryFactory);
-	}
-
-	public createGetPassenger() {
-		return new GetPassenger(this.repositoryFactory);
-	}
-
-	public createGetDriver() {
-		return new GetDriver(this.repositoryFactory);
+	constructor(private readonly repositoryFactory: RepositoryFactory) {
 	}
 
 	public createCalculateRide() {
@@ -35,7 +15,7 @@ export default class UseCaseFactory {
 	}
 
 	public createGetRide() {
-		return new GetRide(this.repositoryFactory);
+		return new GetRide(this.repositoryFactory, new AccountGatewayHttp(new AxiosAdapter()));
 	}
 
 	public createRequestRide() {

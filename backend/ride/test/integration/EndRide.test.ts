@@ -1,9 +1,13 @@
+import AxiosAdapter from "../../src/infra/http/AxiosAdapter";
+import AccountGateway from "../../src/application/gateway/AccountGateway";
+import AccountGatewayHttp from "../../src/infra/gateway/AccountGatewayHttp";
+import PaymentGateway from "../../src/application/gateway/PaymentGateway";
+import PaymentGatewayHttp from "../../src/infra/gateway/PaymentGatewayHttp";
 import DatabaseConnection from "../../src/infra/database/DatabaseConnection";
 import PgPromiseConnection from "../../src/infra/database/PgPromiseConnection";
 import RepositoryFactory from "../../src/application/factory/RepositoryFactory";
 import RepositoryFactoryDatabase from "../../src/infra/repository/RepositoryFactoryDatabase";
-import CreateDriver from "../../src/application/usecase/CreateDriver";
-import CreatePassenger from "../../src/application/usecase/CreatePassenger";
+// Use Cases
 import GetRide from "../../src/application/usecase/GetRide";
 import RequestRide from "../../src/application/usecase/RequestRide";
 import AcceptRide from "../../src/application/usecase/AcceptRide";
@@ -12,12 +16,16 @@ import EndRide from "../../src/application/usecase/EndRide";
 
 let connection: DatabaseConnection;
 let repositoryFactory: RepositoryFactory;
+let accountGateway: AccountGateway;
+let paymentGateway: PaymentGateway;
 
 describe('End Ride Integration Test', function () {
 
 	beforeAll(function () {
 		connection = new PgPromiseConnection();
 		repositoryFactory = new RepositoryFactoryDatabase(connection);
+		accountGateway = new AccountGatewayHttp(new AxiosAdapter());
+		paymentGateway = new PaymentGatewayHttp(new AxiosAdapter());
 	});
 
 	afterAll(async function () {
@@ -30,8 +38,7 @@ describe('End Ride Integration Test', function () {
 			email: "john.doe@gmail.com",
 			document: "83432616074"
 		};
-		const createPassenger = new CreatePassenger(repositoryFactory);
-		const outputCreatePassenger = await createPassenger.execute(inputCreatePassenger);
+		const outputCreatePassenger = await accountGateway.createPassenger(inputCreatePassenger);
 		const inputRequestRide = {
 			passengerId: outputCreatePassenger.passengerId,
 			from: {
@@ -52,8 +59,7 @@ describe('End Ride Integration Test', function () {
 			document: "83432616074",
 			carPlate: "AAA9999"
 		};
-		const createDriver = new CreateDriver(repositoryFactory);
-		const outputCreateDriver = await createDriver.execute(inputCreateDriver);
+		const outputCreateDriver = await accountGateway.createDriver(inputCreateDriver);
 		const inputAcceptRide = {
 			rideId: outputRequestRide.rideId,
 			driverId: outputCreateDriver.driverId,
@@ -71,9 +77,9 @@ describe('End Ride Integration Test', function () {
 			rideId: outputRequestRide.rideId,
 			date: new Date("2021-03-01T10:40:00")
 		}
-		const endRide = new EndRide(repositoryFactory);
+		const endRide = new EndRide(repositoryFactory, accountGateway, paymentGateway);
 		await endRide.execute(inputEndRide);
-		const getRide = new GetRide(repositoryFactory);
+		const getRide = new GetRide(repositoryFactory, accountGateway);
 		const outputGetRide = await getRide.execute({ rideId: outputRequestRide.rideId });
 		expect(outputGetRide.status).toBe("completed");
 		expect(outputGetRide.endDate).toEqual(new Date("2021-03-01T10:40:00"));

@@ -16,7 +16,7 @@ export default class DriverGatewayHttp implements DriverGateway {
 			document: driver.getDocument().getValue(),
 			carPlate: driver.getCarPlate().getValue()
 		}
-		const driverData = await this.httpClient.post('http://localhost:3000/driver', input);
+		const driverData = await this.httpClient.post(`${import.meta.env.VITE_API_URL}/driver`, input);
 		return driverData.driverId;
 	}
 }

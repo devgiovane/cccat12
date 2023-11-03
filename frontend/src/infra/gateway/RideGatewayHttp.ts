@@ -16,7 +16,7 @@ export default class RideGatewayHttp implements RideGateway {
 				{lat: ride.getTo().getLat(), long: ride.getTo().getLong(), date: new Date()}
 			]
 		}
-		const output = await this.httpClient.post('http://localhost:3000/ride/calculate', input);
+		const output = await this.httpClient.post(`${import.meta.env.VITE_API_URL}/ride/calculate`, input);
 		return output.price;
 	}
 
@@ -33,7 +33,7 @@ export default class RideGatewayHttp implements RideGateway {
 			},
 			date: new Date()
 		}
-		const output = await this.httpClient.post('http://localhost:3000/ride/request', input);
+		const output = await this.httpClient.post(`${import.meta.env.VITE_API_URL}/ride/request`, input);
 		return output.rideId;
 	}
 

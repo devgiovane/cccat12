@@ -46,5 +46,11 @@
   - Dependency injection
   - Registry and Singleton
 
+#### Class #07
+
+- Domain-Driven Designer
+  - Bounded Contexts
+  - Context Mapping
+
 ### Create by
 © [Giovane Santos](https://giovanesantossilva.github.io/)

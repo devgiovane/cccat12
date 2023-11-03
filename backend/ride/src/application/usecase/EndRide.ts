@@ -1,3 +1,5 @@
+import PaymentGateway from "../gateway/PaymentGateway";
+import AccountGateway from "../gateway/AccountGateway";
 import RideRepository from "../repository/RideRepository";
 import RepositoryFactory from "../factory/RepositoryFactory";
 
@@ -10,7 +12,9 @@ export default class EndRide {
 	private rideRepository: RideRepository;
 
 	constructor(
-		readonly repositoryFactory: RepositoryFactory
+		repositoryFactory: RepositoryFactory,
+		private readonly accountGateway: AccountGateway,
+		private readonly paymentGateway: PaymentGateway
 	) {
 		this.rideRepository = repositoryFactory.createRideRepository();
 	}
@@ -19,6 +23,10 @@ export default class EndRide {
 		const ride = await this.rideRepository.get(input.rideId);
 		ride.end(input.date);
 		await this.rideRepository.update(ride);
+		const passenger = await this.accountGateway.getPassenger(ride.passengerId);
+		await this.paymentGateway.process({
+			name: passenger.name, email: passenger.email, amount: ride.calculate()
+		});
 	}
 
 }

@@ -3,12 +3,14 @@
 </script>
 
 <template>
-	<nav>
-		<router-link to="/driver">Create Driver</router-link> |
-		<router-link to="/passenger">Create Passenger</router-link> |
-		<router-link to="/passenger/ride">Passenger Ride</router-link>
-	</nav>
-	<main>
+	<header class="h-14 bg-white shadow flex justify-center items-center">
+		<nav>
+			<router-link class="hover:text-blue-700" to="/driver">Driver</router-link> |
+			<router-link class="hover:text-blue-700" to="/passenger">Passenger</router-link> |
+			<router-link class="hover:text-blue-700" to="/ride">Ride</router-link>
+		</nav>
+	</header>
+	<main class="p-4 flex justify-center">
 		<router-view/>
 	</main>
 </template>

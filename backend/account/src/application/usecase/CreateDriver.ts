@@ -17,7 +17,7 @@ export default class CreateDriver {
 	private driverRepository: DriverRepository
 
 	constructor(
-		readonly repositoryFactory: RepositoryFactory
+		repositoryFactory: RepositoryFactory
 	) {
 		this.driverRepository = repositoryFactory.createDriverRepository();
 	}

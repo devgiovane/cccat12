@@ -19,7 +19,7 @@ export default class RequestRide {
 	private rideRepository: RideRepository
 
 	constructor(
-		readonly repositoryFactory: RepositoryFactory
+		repositoryFactory: RepositoryFactory
 	) {
 		this.rideRepository = repositoryFactory.createRideRepository();
 	}
