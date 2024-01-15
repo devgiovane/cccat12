@@ -19,7 +19,7 @@ export default class Passenger {
 
 	public static create (name: string, email: string, document: string): Passenger {
 		const uuid = UUID.create();
-		return new Passenger(uuid.value, name, email, document);
+		return new Passenger(uuid.getValue(), name, email, document);
 	}
 
 }

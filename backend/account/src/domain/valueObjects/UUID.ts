@@ -3,8 +3,12 @@ import crypto from "crypto";
 export default class UUID {
 
 	constructor(
-		public readonly value: string
+		private readonly value: string
 	) {
+	}
+
+	public getValue() {
+		return this.value;
 	}
 
 	static create(): UUID {

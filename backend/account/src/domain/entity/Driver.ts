@@ -23,7 +23,7 @@ export default class Driver {
 
 	public static create (name: string, email: string, document: string, plate: string): Driver {
 		const uuid = UUID.create();
-		return new Driver(uuid.value, name, email, document, plate);
+		return new Driver(uuid.getValue(), name, email, document, plate);
 	}
 
 }

@@ -51,6 +51,15 @@
 - Domain-Driven Designer
   - Bounded Contexts
   - Context Mapping
+  
+#### Class #08
+- Domain-Driven Designer
+  - Entities
+  - Values Objects
+  - Domain Services
+  - Aggregates and Repositories
+- Designer Patterns
+  - Unit of work
 
 ### Create by
 © [Giovane Santos](https://giovanesantossilva.github.io/)

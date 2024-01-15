@@ -23,7 +23,8 @@ describe('Create Passenger Integration Test', function () {
 		const input = {
 			name: "John Doe",
 			email: "john.doe@gmail.com",
-			document: "83432616074"
+			document: "83432616074",
+			password: "123456"
 		};
 		const useCase = new CreatePassenger(repositoryFactory);
 		const output = await useCase.execute(input);
@@ -34,7 +35,8 @@ describe('Create Passenger Integration Test', function () {
 		const input = {
 			name: "John Doe",
 			email: "john.doe@gmail.com",
-			document: "83432616074"
+			document: "83432616074",
+			password: "123456"
 		};
 		const useCase1 = new CreatePassenger(repositoryFactory);
 		const output1 = await useCase1.execute(input);
@@ -43,6 +45,7 @@ describe('Create Passenger Integration Test', function () {
 		expect(output2.name).toBe("John Doe");
 		expect(output2.email).toBe("john.doe@gmail.com");
 		expect(output2.document).toBe("83432616074");
+		expect(output2.userId).toBeDefined();
 	});
 
 });
