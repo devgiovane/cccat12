@@ -5,7 +5,9 @@ import RideRepositoryDatabase from "./RideRepositoryDatabase";
 
 export default class RepositoryFactoryDatabase implements RepositoryFactory {
 
-	constructor(private readonly connection: DatabaseConnection) {
+	constructor(
+		private readonly connection: DatabaseConnection,
+	) {
 	}
 
 	public createRideRepository(): RideRepository {

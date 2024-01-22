@@ -4,8 +4,8 @@ import UseCaseFactory from "../../application/factory/UseCaseFactory";
 export default class HttpController {
 
 	constructor(
-		httpServer: HttpServer,
-		useCaseFactory: UseCaseFactory,
+		readonly httpServer: HttpServer,
+		readonly useCaseFactory: UseCaseFactory,
 	) {
 		httpServer.on("POST", "/driver", async function ({ body }) {
 			return await useCaseFactory.createCreateDriver().execute(body);

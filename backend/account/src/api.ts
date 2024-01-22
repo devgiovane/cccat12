@@ -4,9 +4,10 @@ import UseCaseFactory from "./application/factory/UseCaseFactory";
 import PgPromiseConnection from "./infra/database/PgPromiseConnection";
 import RepositoryFactoryDatabase from "./infra/repository/RepositoryFactoryDatabase";
 
-const connection = new PgPromiseConnection();
-const repositoryFactory = new RepositoryFactoryDatabase(connection);
+const databaseConnection = new PgPromiseConnection();
+const repositoryFactory = new RepositoryFactoryDatabase(databaseConnection);
 const useCaseFactory = new UseCaseFactory(repositoryFactory);
 const httpServer = new ExpressAdapter();
 new HttpController(httpServer, useCaseFactory);
 httpServer.listen(3002);
+

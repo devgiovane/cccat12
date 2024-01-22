@@ -17,6 +17,15 @@ describe('API Integration Test', function () {
 		expect(output.passengerId).toBeDefined();
 	});
 
+	it('should be able register passenger async', async function () {
+		const input = {
+			name: "John Doe",
+			email: "john.doe@gmail.com",
+			document: "83432616074"
+		};
+		await axios.post("http://localhost:3002/passenger/async", input);
+	});
+
 	it('should be able get passenger', async function () {
 		const input = {
 			name: "John Doe",

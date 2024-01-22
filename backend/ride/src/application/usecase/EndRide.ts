@@ -2,6 +2,7 @@ import PaymentGateway from "../gateway/PaymentGateway";
 import AccountGateway from "../gateway/AccountGateway";
 import RideRepository from "../repository/RideRepository";
 import RepositoryFactory from "../factory/RepositoryFactory";
+import QueueConnection from "../../infra/queue/QueueConnection";
 
 type Input = {
 	rideId: string,
@@ -14,7 +15,8 @@ export default class EndRide {
 	constructor(
 		repositoryFactory: RepositoryFactory,
 		private readonly accountGateway: AccountGateway,
-		private readonly paymentGateway: PaymentGateway
+		private readonly paymentGateway: PaymentGateway,
+		private readonly queueConnection: QueueConnection
 	) {
 		this.rideRepository = repositoryFactory.createRideRepository();
 	}
@@ -24,9 +26,12 @@ export default class EndRide {
 		ride.end(input.date);
 		await this.rideRepository.update(ride);
 		const passenger = await this.accountGateway.getPassenger(ride.passengerId);
-		await this.paymentGateway.process({
+		await this.queueConnection.publish("rideEnded", {
 			name: passenger.name, email: passenger.email, amount: ride.calculate()
-		});
+		})
+		// await this.paymentGateway.process({
+		// 	name: passenger.name, email: passenger.email, amount: ride.calculate()
+		// });
 	}
 
 }

@@ -16,6 +16,19 @@ services:
       POSTGRES_DB: app
     networks:
       - infra
+  rabbitmq:
+    image: rabbitmq:management
+    container_name: rabbitmq
+    restart: always
+    tty: true
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    environment:
+      RABBITMQ_DEFAULT_USER: admin
+      RABBITMQ_DEFAULT_PASS: admin
+    networks:
+      - infra
 volumes:
   postgres:
     driver: local

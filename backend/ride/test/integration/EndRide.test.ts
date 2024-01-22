@@ -7,6 +7,8 @@ import DatabaseConnection from "../../src/infra/database/DatabaseConnection";
 import PgPromiseConnection from "../../src/infra/database/PgPromiseConnection";
 import RepositoryFactory from "../../src/application/factory/RepositoryFactory";
 import RepositoryFactoryDatabase from "../../src/infra/repository/RepositoryFactoryDatabase";
+import QueueConnection from "../../src/infra/queue/QueueConnection";
+import RabbitMQConnection from "../../src/infra/queue/RabbitMQConnection";
 // Use Cases
 import GetRide from "../../src/application/usecase/GetRide";
 import RequestRide from "../../src/application/usecase/RequestRide";
@@ -14,22 +16,26 @@ import AcceptRide from "../../src/application/usecase/AcceptRide";
 import StartRide from "../../src/application/usecase/StartRide";
 import EndRide from "../../src/application/usecase/EndRide";
 
-let connection: DatabaseConnection;
+let databaseConnection: DatabaseConnection;
 let repositoryFactory: RepositoryFactory;
 let accountGateway: AccountGateway;
 let paymentGateway: PaymentGateway;
+let queueConnection: QueueConnection;
 
 describe('End Ride Integration Test', function () {
 
 	beforeAll(function () {
-		connection = new PgPromiseConnection();
-		repositoryFactory = new RepositoryFactoryDatabase(connection);
+		databaseConnection = new PgPromiseConnection();
+		repositoryFactory = new RepositoryFactoryDatabase(databaseConnection);
 		accountGateway = new AccountGatewayHttp(new AxiosAdapter());
 		paymentGateway = new PaymentGatewayHttp(new AxiosAdapter());
+		queueConnection = new RabbitMQConnection();
+		queueConnection.connect();
 	});
 
 	afterAll(async function () {
-		await connection.close();
+		await databaseConnection.close();
+		await queueConnection.close();
 	});
 
 	it('should be able start a ride', async function () {
@@ -77,7 +83,7 @@ describe('End Ride Integration Test', function () {
 			rideId: outputRequestRide.rideId,
 			date: new Date("2021-03-01T10:40:00")
 		}
-		const endRide = new EndRide(repositoryFactory, accountGateway, paymentGateway);
+		const endRide = new EndRide(repositoryFactory, accountGateway, paymentGateway, queueConnection);
 		await endRide.execute(inputEndRide);
 		const getRide = new GetRide(repositoryFactory, accountGateway);
 		const outputGetRide = await getRide.execute({ rideId: outputRequestRide.rideId });

@@ -53,6 +53,7 @@
   - Context Mapping
   
 #### Class #08
+
 - Domain-Driven Designer
   - Entities
   - Values Objects
@@ -60,6 +61,11 @@
   - Aggregates and Repositories
 - Designer Patterns
   - Unit of work
+
+#### Class #09
+
+- Event-Driven Architecture
+- Command Query Responsibility Segregation (CQRS)
 
 ### Create by
 © [Giovane Santos](https://giovanesantossilva.github.io/)
